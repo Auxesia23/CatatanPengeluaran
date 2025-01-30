@@ -43,18 +43,26 @@ func main() {
 	r.Route("/transaction", func(r chi.Router) {
 		r.Use(middlewares.JWTAuthMiddleware)
 		r.Post("/create", transactionHandler.CreateTransaction)
+		r.Get("/", transactionHandler.GetTransactions)
+		r.Get("/{id}", transactionHandler.GetTransaction)
+	})
 
-		r.Get("/method", methodHandler.GetMethods)
-		r.Get("/method/{id}", methodHandler.GetMethod)
-		r.Post("/method/create", methodHandler.CreateMethod)
-		r.Delete("/method/delete/{id}", methodHandler.DeleteMethod)
-		r.Put("/method/update/{id}", methodHandler.UpdateMethod)
+	r.Route("/category", func(r chi.Router) {
+		r.Use(middlewares.JWTAuthMiddleware)
+		r.Get("/", categoryHandler.GetCategories)
+		r.Get("/{id}", categoryHandler.GetCategory)
+		r.Post("/create", categoryHandler.CreateCategory)
+		r.Put("/update/{id}", categoryHandler.UpdateCategory)
+		r.Delete("/delete/{id}", categoryHandler.DeleteCategory)
+	})
 
-		r.Get("/category", categoryHandler.GetCategories)
-		r.Get("/category/{id}", categoryHandler.GetCategory)
-		r.Post("/category/create", categoryHandler.CreateCategory)
-		r.Put("/category/update/{id}", categoryHandler.UpdateCategory)
-		r.Delete("/category/delete/{id}", categoryHandler.DeleteCategory)
+	r.Route("/method", func(r chi.Router) {
+		r.Use(middlewares.JWTAuthMiddleware)
+		r.Get("/", methodHandler.GetMethods)
+		r.Get("/{id}", methodHandler.GetMethod)
+		r.Post("/create", methodHandler.CreateMethod)
+		r.Delete("/delete/{id}", methodHandler.DeleteMethod)
+		r.Put("/update/{id}", methodHandler.UpdateMethod)
 	})
 
 	srv := &http.Server{
