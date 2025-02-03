@@ -45,6 +45,8 @@ func main() {
 		r.Post("/create", transactionHandler.CreateTransaction)
 		r.Get("/", transactionHandler.GetTransactions)
 		r.Get("/{id}", transactionHandler.GetTransaction)
+		r.Put("/update/{id}", transactionHandler.UpdateTransaction)
+		r.Delete("/delete/{id}", transactionHandler.DeleteTransaction)
 	})
 
 	r.Route("/category", func(r chi.Router) {

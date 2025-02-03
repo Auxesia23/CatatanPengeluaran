@@ -7,3 +7,13 @@ type InputTransaction struct {
 	Description string    `json:"description"`
 	Date        string    `json:"date"`
 }
+
+type TransactionResponse struct {
+    ID          uint    `json:"id"`
+    UserID      uint    `json:"user_id"`
+    Category    string  `json:"category"`
+    Method      string  `json:"method"`
+    Amount      float64 `json:"amount"`
+    Description string  `json:"description"`
+    Date        string  `json:"date"`
+}
