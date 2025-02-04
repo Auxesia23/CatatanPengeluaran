@@ -1,13 +1,16 @@
 package database
 
 import (
-	"gorm.io/gorm"
-	"gorm.io/driver/sqlite"
+	"os"
+
 	"github.com/Auxesia23/CatatanPengeluaran/models"
+	"gorm.io/driver/mysql"
+	"gorm.io/gorm"
 )
 
 func InitDB() *gorm.DB {
-	db, err := gorm.Open(sqlite.Open("catatan_pengeluaran.db"), &gorm.Config{})
+	dsn := os.Getenv("DSN")
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
 		panic("failed to connect database")
 	}
