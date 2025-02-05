@@ -48,12 +48,22 @@ func (c *CategoryHandler) CreateCategory(w http.ResponseWriter, r *http.Request)
 }
 
 func(c *CategoryHandler)GetCategories(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
+	
 	var categories []models.Category
-	err := c.db.Find(&categories).Error
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}	
+	if name == "" {
+		err := c.db.Find(&categories).Error
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		err := c.db.Where("name LIKE ?", "%"+name+"%").Find(&categories).Error
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 
 	responses := []schemas.CategoryResponse{}
 	for i := range categories {

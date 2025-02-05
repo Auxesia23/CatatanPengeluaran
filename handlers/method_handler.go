@@ -51,11 +51,20 @@ func (m *MethodHandler) CreateMethod(w http.ResponseWriter, r *http.Request) {
 }
 
 func (m *MethodHandler) GetMethods(w http.ResponseWriter, r *http.Request) {
+	name := r.URL.Query().Get("name")
 	var methods []models.Method
-	err := m.db.Find(&methods).Error
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
+	if name == "" {
+		err := m.db.Find(&methods).Error
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		err := m.db.Where("name LIKE ?", "%"+name+"%").Find(&methods).Error
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 	responses := []schemas.MethodResponse{}
 	for i := range methods {
