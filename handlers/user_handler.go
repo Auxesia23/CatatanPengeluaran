@@ -2,13 +2,14 @@ package handlers
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 
-	"gorm.io/gorm"
-	"github.com/Auxesia23/CatatanPengeluaran/schemas"
-	"github.com/Auxesia23/CatatanPengeluaran/models"
-	"github.com/Auxesia23/CatatanPengeluaran/utils"
 	"github.com/Auxesia23/CatatanPengeluaran/middlewares"
+	"github.com/Auxesia23/CatatanPengeluaran/models"
+	"github.com/Auxesia23/CatatanPengeluaran/schemas"
+	"github.com/Auxesia23/CatatanPengeluaran/utils"
+	"gorm.io/gorm"
 )
 
 type Userhandler struct {
@@ -28,6 +29,7 @@ func (u *Userhandler) Register(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	log.Println(input)
 
 	var existingUser models.User
 	err = u.db.Where("username = ?", input.Username).First(&existingUser).Error
@@ -36,7 +38,7 @@ func (u *Userhandler) Register(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if len(input.Password) < 6 {
+	if len([]rune(input.Password)) < 8 {
 		http.Error(w, "Password must be at least 8 characters long", http.StatusBadRequest)
 		return
 	}
