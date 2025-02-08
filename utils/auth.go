@@ -59,3 +59,4 @@ func VerifyJWT(tokenString string) (*jwt.Token, error) {
 	}
 	return token, nil
 }
+

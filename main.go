@@ -50,7 +50,7 @@ func main() {
 	})
 
 	r.Route("/category", func(r chi.Router) {
-		r.Use(middlewares.JWTAuthMiddleware)
+		r.Use(middlewares.SuperUserAuth)
 		r.Get("/", categoryHandler.GetCategories)
 		r.Get("/{id}", categoryHandler.GetCategory)
 		r.Post("/create", categoryHandler.CreateCategory)
